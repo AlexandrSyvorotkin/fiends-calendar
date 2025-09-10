@@ -5,14 +5,17 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import FullCalendar from "@fullcalendar/react"
 import listPlugin from '@fullcalendar/list'
-import { useNavigate } from 'react-router';
-import { useEffect, useRef } from 'react';
+import { AddWeekendDialog } from '@/components/add-weekend-dialog';
+import { useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
+import { useNavigate } from 'react-router';
+import { UserCard } from '@/components/user-card';
+
 
 const CalendarPage = () => {
   const { user } = useUser();
+  const [selectedDate, setSelectedDate] = useState<string>('Выберите дату');
 
-  
   const calendarRef = useRef<FullCalendar | null>(null);
   const desktop = useMediaQuery({ query: '(min-width: 768px)' });
 
@@ -22,7 +25,7 @@ const CalendarPage = () => {
       if (desktop) {
         calendarApi.changeView('dayGridMonth');
       } else {
-        calendarApi.changeView('listWeek');
+        calendarApi.changeView('listMonth');
       }
     }
   }, [desktop]);
@@ -32,12 +35,11 @@ const CalendarPage = () => {
 
   console.log(user)
 
-  
 
   const navigate = useNavigate()
-  if (user.name === '') {
-    navigate('/')
-  }
+  // if (user.name === '') {
+  //   navigate('/')
+  // }
 
 
   // Преобразуем все выходные в события для календаря
@@ -48,28 +50,38 @@ const CalendarPage = () => {
     backgroundColor: event.userColor,
   }));
 
-  return <div className="flex flex-col justify-center items-center w-full h-screen p-8">
-    <div className="p-2 max-w-sm text-center rounded-lg" style={{ backgroundColor: user.color }}>
-      <h2 className="text-white text-2xl font-bold">Привет! {user.name}</h2>
-    </div>
-    <div className="w-full h-full">
-      <FullCalendar
-        ref={calendarRef}
-        plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
-        initialView={desktop ? 'dayGridMonth' : 'listWeek'}
-        weekends={true}
-        dateClick={async (e) => {
-          await toggleWeekend(e.dateStr)
-        }}
-        eventClick={async (e) => {
-          await toggleWeekend(e.event.startStr)
-        }}
-        eventContent={(arg) => (
-          <div className="text-xs font-bold text-white">
-            {arg.event.title}
-          </div>
-        )}
-        events={events}
+  return <div className="min-h-screen p-4 bg-blue-500 dark:bg-slate-900">
+    <div className="w-full mx-auto">
+      <UserCard />
+      <div className="bg-white rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden fade-in-up" style={{ animationDelay: '0.2s' }}>
+        <div className="p-6">
+          <FullCalendar
+            ref={calendarRef}
+            plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
+            initialView={desktop ? 'dayGridMonth' : 'listMonth'}
+            weekends={true}
+            dateClick={async (e) => {
+              await toggleWeekend(e.dateStr)
+            }}
+            eventClick={async (e) => {
+              await toggleWeekend(e.event.startStr)
+            }}
+            eventContent={(arg) => (
+              <div className="text-xs font-bold text-white px-1 py-0.5 rounded-sm shadow-sm">
+                {arg.event.title}
+              </div>
+            )}
+            events={events}
+          />
+        </div>
+      </div>
+
+      {/* Add Weekend Dialog */}
+      <AddWeekendDialog
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        toggleWeekend={toggleWeekend}
+        events={weekendEvents}
       />
     </div>
   </div>;
