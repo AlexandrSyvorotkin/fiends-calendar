@@ -50,11 +50,11 @@ const CalendarPage = () => {
     backgroundColor: event.userColor,
   }));
 
-  return <div className="min-h-screen p-4 bg-blue-500 dark:bg-slate-900">
+  return <div className="min-h-screen p-2 sm:p-4 bg-blue-500 dark:bg-slate-900">
     <div className="w-full mx-auto">
       <UserCard />
       <div className="bg-white rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden fade-in-up" style={{ animationDelay: '0.2s' }}>
-        <div className="p-6">
+        <div className="p-2 sm:p-6">
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
@@ -67,7 +67,7 @@ const CalendarPage = () => {
               await toggleWeekend(e.event.startStr)
             }}
             eventContent={(arg) => (
-              <div className="text-xs font-bold text-white px-1 py-0.5 rounded-sm shadow-sm">
+              <div className="text-xs font-bold text-black px-1 py-0.5 rounded-sm shadow-sm">
                 {arg.event.title}
               </div>
             )}
