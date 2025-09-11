@@ -37,9 +37,9 @@ const CalendarPage = () => {
 
 
   const navigate = useNavigate()
-  // if (user.name === '') {
-  //   navigate('/')
-  // }
+  if (user.name === '') {
+    navigate('/')
+  }
 
 
   // Преобразуем все выходные в события для календаря
