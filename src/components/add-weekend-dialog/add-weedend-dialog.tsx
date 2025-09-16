@@ -3,21 +3,26 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useDateOptions } from "@/hooks/useDateOptions";
+import type { Dispatch, SetStateAction } from "react";
 
 const AddWeekendDialog = ({
     selectedDate,
     setSelectedDate,
     toggleWeekend,
     events,
+    isOpen,
+    setIsOpen,
 }: {
     selectedDate: string;
     setSelectedDate: (date: string) => void;
     toggleWeekend: (date: string) => void;
     events: WeekendEvent[];
+    isOpen: boolean;
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { dateOptions } = useDateOptions(events);
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button className="fixed bottom-8 right-8 text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center text-3xl font-bold z-10 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 hover:scale-110 hover:shadow-3xl animate-pulse">
             +
@@ -55,6 +60,7 @@ const AddWeekendDialog = ({
                 onClick={async () => {
                   if (selectedDate && selectedDate !== 'Выберите дату') {
                     await toggleWeekend(selectedDate);
+                    setIsOpen(false);
                   }
                   setSelectedDate('Выберите дату');
                 }}

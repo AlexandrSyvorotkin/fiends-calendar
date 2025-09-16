@@ -18,7 +18,7 @@ export const useDateOptions = (events: WeekendEvent[]) => {
     return Array.from({ length: daysInMonth }, (_, i) => {
       const day = i + 1;
       const date = new Date(currentYear, currentMonth, day);
-      const dateStr = date.toISOString().split('T')[0];
+      const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const dayName = date.toLocaleDateString('ru-RU', { weekday: 'short' });
       const isToday = day === today.getDate();
       const hasEvent = events.some(event => event.date === dateStr);

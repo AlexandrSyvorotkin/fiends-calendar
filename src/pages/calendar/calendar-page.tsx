@@ -5,11 +5,13 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import FullCalendar from "@fullcalendar/react"
 import listPlugin from '@fullcalendar/list'
+import ruLocale from '@fullcalendar/core/locales/ru'
 import { AddWeekendDialog } from '@/components/add-weekend-dialog';
-import { useEffect, useRef, useState } from 'react';
-import { useMediaQuery } from 'react-responsive'
-import { useNavigate } from 'react-router';
+import { useRef, useState } from 'react';
 import { UserCard } from '@/components/user-card';
+import useCalendarView from '@/hooks/useCalendarView';
+import { useNavigate } from 'react-router';
+import './calendar.css';
 
 
 const CalendarPage = () => {
@@ -17,23 +19,11 @@ const CalendarPage = () => {
   const [selectedDate, setSelectedDate] = useState<string>('Выберите дату');
 
   const calendarRef = useRef<FullCalendar | null>(null);
-  const desktop = useMediaQuery({ query: '(min-width: 768px)' });
-
-  useEffect(() => {
-    const calendarApi = calendarRef.current?.getApi();
-    if (calendarApi) {
-      if (desktop) {
-        calendarApi.changeView('dayGridMonth');
-      } else {
-        calendarApi.changeView('listMonth');
-      }
-    }
-  }, [desktop]);
+  const { initialView } = useCalendarView(calendarRef);
 
   const { toggleWeekend } = useWeekends(user.id);
   const { weekendEvents } = useAllWeekends();
 
-  console.log(user)
 
 
   const navigate = useNavigate()
@@ -50,16 +40,30 @@ const CalendarPage = () => {
     backgroundColor: event.userColor,
   }));
 
-  return <div className="min-h-screen p-2 sm:p-4 bg-blue-500 dark:bg-slate-900">
-    <div className="w-full mx-auto">
+  const [isOpen, setIsOpen] = useState(false);
+
+  return <div className="h-screen flex flex-col bg-blue-500 dark:bg-slate-900">
+    <div className="w-full mx-auto flex flex-col flex-1 p-2 sm:p-4 gap-4">
       <UserCard />
-      <div className="bg-white rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden fade-in-up" style={{ animationDelay: '0.2s' }}>
-        <div className="p-2 sm:p-6">
+      <div className="bg-white rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden fade-in-up flex-1" style={{ animationDelay: '0.2s' }}>
+        <div className="h-full p-2 sm:p-6">
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
-            initialView={desktop ? 'dayGridMonth' : 'listMonth'}
+            initialView={initialView}
             weekends={true}
+            height="100%"
+            locale={ruLocale}
+            firstDay={1}
+            headerToolbar={{
+              start: 'prev',
+              center: 'title',
+              end: 'next'
+            }}
+            buttonText={{
+              today: 'Сегодня'
+            }}
+            titleFormat={{ year: 'numeric', month: 'long' }}
             dateClick={async (e) => {
               await toggleWeekend(e.dateStr)
             }}
@@ -82,6 +86,8 @@ const CalendarPage = () => {
         setSelectedDate={setSelectedDate}
         toggleWeekend={toggleWeekend}
         events={weekendEvents}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
       />
     </div>
   </div>;

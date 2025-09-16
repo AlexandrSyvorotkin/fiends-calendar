@@ -23,7 +23,7 @@ const UserCard = () => {
 				</div>
 
 			</div>
-			<Switch checked={theme === 'light'} onCheckedChange={toggleTheme} />
+			{/* <Switch checked={theme === 'light'} onCheckedChange={toggleTheme} /> */}
 		</div>
 	)
 }
