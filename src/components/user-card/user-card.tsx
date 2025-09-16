@@ -1,10 +1,10 @@
-import { Switch } from "@/components/ui/switch"
-import { useTheme } from "@/hooks/useTheme";
+	// import { Switch } from "@/components/ui/switch"
+	// import { useTheme } from "@/hooks/useTheme";
 import { useUser } from "@/hooks/useUser";
 
 const UserCard = () => {
 	const { user } = useUser();
-	const { theme, toggleTheme } = useTheme();
+	// const { theme, toggleTheme } = useTheme();
 
 	return (
 		<div className="mb-4 sm:mb-8 text-center fade-in-up flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 p-2 sm:p-4">
