@@ -40,6 +40,8 @@ const CalendarPage = () => {
     backgroundColor: event.userColor,
   }));
 
+  console.log(events)
+
   const [isOpen, setIsOpen] = useState(false);
 
   return <div className="h-screen flex flex-col bg-blue-500 dark:bg-slate-900">
@@ -88,6 +90,7 @@ const CalendarPage = () => {
         events={weekendEvents}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        userId={user.id}
       />
     </div>
   </div>;

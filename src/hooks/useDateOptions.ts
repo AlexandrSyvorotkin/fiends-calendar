@@ -8,7 +8,7 @@ export interface DateOption {
   hasEvent: boolean;
 }
 
-export const useDateOptions = (events: WeekendEvent[]) => {
+export const useDateOptions = (events: WeekendEvent[], userId?: number) => {
   const dateOptions = useMemo(() => {
     const today = new Date();
     const currentMonth = today.getMonth();
@@ -21,7 +21,7 @@ export const useDateOptions = (events: WeekendEvent[]) => {
       const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const dayName = date.toLocaleDateString('ru-RU', { weekday: 'short' });
       const isToday = day === today.getDate();
-      const hasEvent = events.some(event => event.date === dateStr);
+      const hasEvent = events.some(event => event.date === dateStr && event.userId === userId);
       
       return {
         value: dateStr,
@@ -30,7 +30,7 @@ export const useDateOptions = (events: WeekendEvent[]) => {
         hasEvent
       };
     });
-  }, [events]);
+  }, [events, userId]);
 
   return { dateOptions };
 };
