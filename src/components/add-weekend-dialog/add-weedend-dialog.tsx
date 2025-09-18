@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useDateOptions } from "@/hooks/useDateOptions";
-import type { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 
 const AddWeekendDialog = ({
     selectedDate,
@@ -24,8 +24,17 @@ const AddWeekendDialog = ({
     userId: number;
 }) => {
   const { dateOptions } = useDateOptions(events, userId);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog 
+      open={isOpen} 
+      onOpenChange={(open) => {
+        if (!open) {
+          setIsSelectOpen(false);
+        }
+        setIsOpen(open);
+      }}
+    >
         <DialogTrigger asChild>
           <Button className="fixed bottom-8 right-8 text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center z-10 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 hover:scale-110 hover:shadow-3xl animate-pulse p-0">
             <Plus size={20} strokeWidth={3} />
@@ -45,6 +54,8 @@ const AddWeekendDialog = ({
             <div className="space-y-3">
               <label className="text-sm font-medium text-slate-700">Дата</label>
               <Select 
+                open={isSelectOpen}
+                onOpenChange={setIsSelectOpen}
                 value={selectedDate === 'Выберите дату' ? undefined : selectedDate} 
                 onValueChange={setSelectedDate}
               >
