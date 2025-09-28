@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
 
-export const useWeekends = (userId: number) => {
+export const useWeekends = (userId: string) => {
   const [weekends, setWeekends] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!userId) return;
     const fetchWeekends = async () => {
-      const userRef = doc(db, 'users', String(userId));
+      const userRef = doc(db, 'users', userId);
       const userSnap = await getDoc(userRef);
       if (userSnap.exists()) {
         setWeekends(userSnap.data().weekends || []);
@@ -22,16 +22,16 @@ export const useWeekends = (userId: number) => {
   }, [userId]);
 
   const addWeekend = async (date: string) => {
-    const userRef = doc(db, 'users', String(userId));
+    const userRef = doc(db, 'users', userId);
     const newWeekends = [...weekends, date];
-    await setDoc(userRef, { weekends: newWeekends }, { merge: true });
+    await updateDoc(userRef, { weekends: newWeekends });
     setWeekends(newWeekends);
   };
 
   const removeWeekend = async (date: string) => {
-    const userRef = doc(db, 'users', String(userId));
+    const userRef = doc(db, 'users', userId);
     const newWeekends = weekends.filter(d => d !== date);
-    await setDoc(userRef, { weekends: newWeekends }, { merge: true });
+    await updateDoc(userRef, { weekends: newWeekends });
     setWeekends(newWeekends);
   };
 

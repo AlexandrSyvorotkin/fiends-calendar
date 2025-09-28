@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { useDateOptions } from "@/hooks/useDateOptions";
+import { getDateOptions } from "@/hooks/useDateOptions";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
 const AddWeekendDialog = ({
@@ -23,7 +23,7 @@ const AddWeekendDialog = ({
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     userId: number;
 }) => {
-  const { dateOptions } = useDateOptions(events, userId);
+  const dateOptions = getDateOptions(events, userId);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   return (
     <Dialog 

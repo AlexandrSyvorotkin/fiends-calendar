@@ -7,24 +7,22 @@ const UserCard = () => {
 	// const { theme, toggleTheme } = useTheme();
 
 	return (
-		<div className="mb-4 sm:mb-8 text-center fade-in-up flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 p-2 sm:p-4">
-			<div className="inline-flex items-center gap-4 p-4 sm:p-6 rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20 w-full sm:w-auto">
-				<div
-					className="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold text-white shadow-lg"
-					style={{ backgroundColor: user.color }}
-				>
-					{user.name.charAt(0).toUpperCase()}
-				</div>
-				<div>
-					<h1 className="text-xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
-						Привет, {user.name}!
-					</h1>
-					<p className="text-slate-600 mt-1">Управляйте своими выходными</p>
-				</div>
-
-			</div>
-			{/* <Switch checked={theme === 'light'} onCheckedChange={toggleTheme} /> */}
+		
+		<div className="inline-flex items-center gap-4 p-4 sm:p-6 rounded-2xl shadow-lg bg-white/80 backdrop-blur-sm border border-white/20 w-full sm:w-auto">
+		<div
+			className="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold text-white shadow-lg"
+			style={{ backgroundColor: user.color }}
+		>
+			{user.name.charAt(0).toUpperCase()}
 		</div>
+		<div>
+			<h1 className="text-xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+				Привет, {user.name}!
+			</h1>
+			<p className="text-slate-600 mt-1">Управляйте своими выходными</p>
+		</div>
+
+	</div>
 	)
 }
 

@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@/firebase';
-import usersData from '@/users';
+import { useUsers } from './useUsers';
 
 interface User {
-  id: number;
+  id: string;
   name: string;
   color: string;
 }
 
 export interface WeekendEvent {
   id: string;
-  userId: number;
+  userId: string;
   userName: string;
   userColor: string;
   date: string;
@@ -21,27 +21,34 @@ export const useAllWeekends = () => {
   const [weekendEvents, setWeekendEvents] = useState<WeekendEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
+
     const usersRef = collection(db, 'users');
     const unsubscribe = onSnapshot(usersRef, (usersSnap) => {
       const events: WeekendEvent[] = [];
       usersSnap.forEach((docSnap) => {
         const data = docSnap.data();
-        const userId = Number(docSnap.id);
+        const userId = docSnap.id; // ID это имя пользователя
         const weekends: string[] = data.weekends || [];
-        const userInfo = (usersData as User[]).find(u => u.id === userId);
-        const name = userInfo ? userInfo.name : `User ${userId}`;
-        const color = userInfo ? userInfo.color : '#FF5733';
+        
+        // Используем данные из Firestore напрямую
+        const name = data.name || userId;
+        const color = data.color || '#FF5733';
+        
         weekends.forEach(date => {
-          events.push({
+          const event = {
             id: `${userId}_${date}`,
             userId,
             userName: name,
             userColor: color,
             date,
-          });
+          };
+          console.log('Adding event:', event);
+          events.push(event);
         });
       });
+      console.log('Setting weekend events:', events);
       setWeekendEvents(events);
       setLoading(false);
     });
