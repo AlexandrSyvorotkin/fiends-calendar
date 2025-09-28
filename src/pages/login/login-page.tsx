@@ -27,9 +27,9 @@ const LoginPage = () => {
         timestamp: Date.now()
       }))
       setUser({
-        id: Number(found.id),
         name: found.name,
-        color: found.color
+        color: found.color,
+        weekends: found.weekends
       })
       
       setError('')
