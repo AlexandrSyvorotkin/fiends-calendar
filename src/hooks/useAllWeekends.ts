@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@/firebase';
-import { useUsers } from './useUsers';
 
-interface User {
-  id: string;
-  name: string;
-  color: string;
-}
 
 export interface WeekendEvent {
   id: string;

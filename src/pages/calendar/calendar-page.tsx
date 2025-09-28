@@ -13,7 +13,7 @@ import useCalendarView from "@/hooks/useCalendarView";
 import { useNavigate } from "react-router";
 import "./calendar.css";
 import { Button } from "@/components/ui/button";
-import { useUsers, useUsersSubscription } from "@/hooks/useUsers";
+import { useUsers } from "@/hooks/useUsers";
 import { UserList } from "@/components/user-list";
 import { UserListItem } from "@/components/user-list/user-list-item";
 import { ColorPicker } from "@/components/ui/color-picker";
