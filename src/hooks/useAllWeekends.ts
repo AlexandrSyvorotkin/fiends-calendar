@@ -38,11 +38,9 @@ export const useAllWeekends = () => {
             userColor: color,
             date,
           };
-          console.log('Adding event:', event);
           events.push(event);
         });
       });
-      console.log('Setting weekend events:', events);
       setWeekendEvents(events);
       setLoading(false);
     });

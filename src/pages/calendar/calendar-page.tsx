@@ -30,10 +30,6 @@ const CalendarPage = () => {
     return state.users;
   });
 
-  console.log(user);
-
-  // Активируем подписку на изменения пользователей
-  // useUsersSubscription();
 
   const calendarRef = useRef<FullCalendar | null>(null);
   const { initialView } = useCalendarView(calendarRef);
@@ -41,7 +37,6 @@ const CalendarPage = () => {
   const { toggleWeekend } = useWeekends(user.name);
   const { weekendEvents } = useAllWeekends();
 
-  console.log(weekendEvents);
 
   const navigate = useNavigate();
   const userStorage = localStorage.getItem("user");
@@ -74,6 +69,7 @@ const CalendarPage = () => {
       setColor(user.color);
     }
   };
+
 
   return (
     <div className="h-screen flex flex-col bg-blue-500 dark:bg-slate-900">

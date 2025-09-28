@@ -2,11 +2,18 @@ import {
   doc,
   setDoc,
   getDoc,
-  collection,
-  onSnapshot,
   updateDoc,
+  getDocs,
+  collection,
 } from "firebase/firestore";
 import { db } from "@/firebase";
+
+export interface FirebaseUser {
+  id: string;
+  name: string;
+  color: string;
+  weekends: string[];
+}
 
 export const useFirebaseUser = () => {
   const createUser = async (name: string, color: string) => {
@@ -43,23 +50,20 @@ export const useFirebaseUser = () => {
     });
   };
 
-  const subscribeToUsers = (callback: (users: any[]) => void) => {
-    const usersRef = collection(db, "users");
-
-    // Создаем подписку на изменения
-    const unsubscribe = onSnapshot(usersRef, (snapshot) => {
-      // console.log('Firebase snapshot:', snapshot.docs.length, 'documents');
-      const users = snapshot.docs.map((doc) => ({
+  const getAllUsers = async (): Promise<FirebaseUser[]> => {
+    try {
+      const usersCol = collection(db, "users")
+      const usersSnapshot = await getDocs(usersCol)
+      const usersList = usersSnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data(),
-      }));
-      // console.log('Mapped users:', users);
-      callback(users);
-    });
+        ...doc.data()
+      })) as FirebaseUser[]
+      return usersList
+    } catch (error) {
+      console.error("Ошибка при получении пользователей:", error)
+      return []
+    }
+  }
 
-    // Возвращаем функцию для отписки
-    return unsubscribe;
-  };
-
-  return { createUser, subscribeToUsers, updateUser };
+  return { createUser, updateUser, getAllUsers };
 };

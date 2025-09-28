@@ -1,9 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useUser } from "@/hooks/useUser";
-import { useUsers, useUsersSubscription } from "@/hooks/useUsers";
+import { useUsers } from "@/hooks/useUsers";
+import { useFirebaseUser } from "@/hooks/useFirebaseUser";
 
 
 const LoginPage = () => {
@@ -12,10 +13,21 @@ const LoginPage = () => {
   const [error, setError] = useState('')
   const navigate = useNavigate()
   const {setUser} = useUser()
+  const {getAllUsers} = useFirebaseUser()
+  const {setUsers} = useUsers()
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const users = await getAllUsers()
+      console.log(users)
+      setUsers(users)
+    }
+    fetchUsers()
+  }, [])
+
   const users = useUsers(state => state.users);
-  
-  // Активируем подписку на изменения пользователей
-  useUsersSubscription();
+
+  // console.log(users)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
