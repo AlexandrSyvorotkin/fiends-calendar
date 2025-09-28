@@ -13,7 +13,7 @@ const AddWeekendDialog = ({
     events,
     isOpen,
     setIsOpen,
-    userId,
+    username,
 }: {
     selectedDate: string;
     setSelectedDate: (date: string) => void;
@@ -21,9 +21,9 @@ const AddWeekendDialog = ({
     events: WeekendEvent[];
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
-    userId: number;
+    username: string;
 }) => {
-  const dateOptions = getDateOptions(events, userId);
+  const dateOptions = getDateOptions(events, username);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   return (
     <Dialog 

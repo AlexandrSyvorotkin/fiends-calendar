@@ -119,7 +119,7 @@ const CalendarPage = () => {
           events={weekendEvents}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          userId={user.id}
+          username={user.name}
         />
       </div>
     </div>

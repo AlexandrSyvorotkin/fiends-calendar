@@ -1,9 +1,9 @@
 import { create } from 'zustand'
 
 interface User {
-  id: number
   name: string
-  color: string
+  color: string,
+  weekends: string[]
 }
 
 interface UserState {
@@ -29,7 +29,7 @@ const getInitialState = (): User => {
   } catch (error) {
     console.error('Error reading from localStorage:', error)
   }
-  return { id: 0, name: '', color: '' }
+  return {name: '', color: '', weekends: [] }
 }
 
 export const useUser = create<UserState>((set) => ({
@@ -40,6 +40,6 @@ export const useUser = create<UserState>((set) => ({
   })),
   removeUser: () => {
     localStorage.removeItem('user')
-    set({ user: { id: 0, name: '', color: '' } })
+    set({ user: { name: '', color: '', weekends: [] } })
   },
 }))

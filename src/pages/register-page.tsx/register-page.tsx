@@ -5,10 +5,8 @@ import { useNavigate } from "react-router";
 import { useUser } from "@/hooks/useUser";
 import { ColorPicker } from "@/components/ui/color-picker";
 import { useFirebaseUser } from "@/hooks/useFirebaseUser";
-import { useUsers } from "@/hooks/useUsers";
 
 const RegisterPage = () => {
-  const users = useUsers(state => state.users);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { setUser } = useUser();
@@ -25,13 +23,6 @@ const RegisterPage = () => {
     try {
       await createUser(newUser.name, newUser.color);
       
-      // // Сохраняем локально
-      // users.push({
-      //   id: newUser.name,
-      //   name: newUser.name,
-      //   color: newUser.color,
-      //   weekends: newUser.weekends || []
-      // });
       setUser(newUser);
       // Переходим на календарь
       navigate("/calendar");
