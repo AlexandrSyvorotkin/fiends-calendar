@@ -18,16 +18,19 @@ import { UserList } from "@/components/user-list";
 import { UserListItem } from "@/components/user-list/user-list-item";
 import { ColorPicker } from "@/components/ui/color-picker";
 import { Switch } from "@/components/ui/switch";
+import { useFirebaseUser } from "@/hooks/useFirebaseUser";
+import { TabsContent, TabsList, TabsTrigger, Tabs } from "@/components/ui/tabs";
 
 const CalendarPage = () => {
   const { user } = useUser();
   const [selectedDate, setSelectedDate] = useState<string>("Выберите дату");
+
   const users = useUsers((state) => {
     // console.log('Current state users:', state.users);
     return state.users;
   });
 
-  console.log(user)
+  console.log(user);
 
   // Активируем подписку на изменения пользователей
   // useUsersSubscription();
@@ -55,60 +58,88 @@ const CalendarPage = () => {
   }));
 
   const [isOpen, setIsOpen] = useState(false);
-  // const { updateUserColor } = useUserColor(user.id);
   const { removeUser } = useUser();
+  const { updateUser } = useFirebaseUser();
+
+  const [color, setColor] = useState(user.color);
+
+  const onChangeColor = async (newColor: string) => {
+    setColor(newColor);
+    try {
+      await updateUser(user.name, newColor);
+      console.log("Цвет пользователя успешно обновлен");
+    } catch (error) {
+      console.error("Ошибка при обновлении цвета:", error);
+      // Возвращаем предыдущий цвет в случае ошибки
+      setColor(user.color);
+    }
+  };
+
   return (
     <div className="h-screen flex flex-col bg-blue-500 dark:bg-slate-900">
       <div className="w-full mx-auto flex flex-col flex-1 p-2 sm:p-4 gap-4">
         <div className="mb-4 sm:mb-8 text-center fade-in-up flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 p-2 sm:p-4">
           <UserCard />
           <div className="flex items-center gap-4">
-            <Switch/>
-            <ColorPicker value={user.color} onChange={() => console.log('color changed')}/>
+            <Switch />
+            <ColorPicker value={color} onChange={onChangeColor} />
             <Button onClick={() => removeUser()}>Выйти</Button>
           </div>
         </div>
         <div className="flex gap-8 w-full h-full mt-8">
-          <UserList rendersUsers={() => users.map((user) => (
-            <UserListItem key={user.id} user={user} />
-          ))} />
-          <div
-            className="bg-white rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden fade-in-up flex-1"
-            style={{ animationDelay: "0.2s" }}
-          >
-            <div className="h-full p-2 sm:p-6">
-              <FullCalendar
-                ref={calendarRef}
-                plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
-                initialView={initialView}
-                weekends={true}
-                height="100%"
-                locale={ruLocale}
-                firstDay={1}
-                headerToolbar={{
-                  start: "prev",
-                  center: "title",
-                  end: "next",
-                }}
-                buttonText={{
-                  today: "Сегодня",
-                }}
-                titleFormat={{ year: "numeric", month: "long" }}
-                dateClick={async (e) => {
-                  await toggleWeekend(e.dateStr);
-                }}
-                eventClick={async (e) => {
-                  await toggleWeekend(e.event.startStr);
-                }}
-                eventContent={(arg) => (
-                  <div className="text-xs font-bold text-white px-1 py-0.5 rounded-sm shadow-sm">
-                    {arg.event.title}
-                  </div>
-                )}
-                events={events}
-              />
-            </div>
-          </div>
+          <UserList
+            rendersUsers={() =>
+              users.map((user) => <UserListItem key={user.id} user={user} />)
+            }
+          />
+          <Tabs className="w-full" defaultValue="weekends">
+            <TabsList>
+              <TabsTrigger value="weekends">Выходные</TabsTrigger>
+              <TabsTrigger value="work">Рабочие</TabsTrigger>
+            </TabsList>
+            <TabsContent value="weekends">
+              <div
+                className="bg-white rounded-2xl h-full shadow-xl border border-slate-200/50 overflow-hidden fade-in-up flex-1"
+                style={{ animationDelay: "0.2s" }}
+              >
+                <div className="h-full p-2 sm:p-6">
+                  <FullCalendar
+                    ref={calendarRef}
+                    plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
+                    initialView={initialView}
+                    weekends={true}
+                    height="100%"
+                    locale={ruLocale}
+                    firstDay={1}
+                    headerToolbar={{
+                      start: "prev",
+                      center: "title",
+                      end: "next",
+                    }}
+                    buttonText={{
+                      today: "Сегодня",
+                    }}
+                    titleFormat={{ year: "numeric", month: "long" }}
+                    dateClick={async (e) => {
+                      await toggleWeekend(e.dateStr);
+                    }}
+                    eventClick={async (e) => {
+                      await toggleWeekend(e.event.startStr);
+                    }}
+                    eventContent={(arg) => (
+                      <div className="text-xs font-bold text-white px-1 py-0.5 rounded-sm shadow-sm">
+                        {arg.event.title}
+                      </div>
+                    )}
+                    events={events}
+                  />
+                </div>
+              </div>
+            </TabsContent>
+            <TabsContent value="work">
+              <div>Рабочие</div>
+            </TabsContent>
+          </Tabs>
         </div>
 
         {/* Add Weekend Dialog */}
