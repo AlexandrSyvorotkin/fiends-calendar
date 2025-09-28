@@ -8,22 +8,30 @@ import { useFirebaseUser } from "@/hooks/useFirebaseUser";
 import { useUsers } from "@/hooks/useUsers";
 
 const RegisterPage = () => {
-  const [name, setName] = useState("");
   const users = useUsers(state => state.users);
-  const [color, setColor] = useState("#000000");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { setUser } = useUser();
   const { createUser } = useFirebaseUser();
 
+  const [newUser, setNewUser] = useState({
+    name: '',
+    color: '#000000',
+    weekends: []
+  })
+
   const onCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      // Создаем пользователя в Firebase и получаем его данные с ID
-      const newUser = await createUser(name, color);
+      await createUser(newUser.name, newUser.color);
       
-      // Сохраняем локально
-      users.push(newUser);
+      // // Сохраняем локально
+      // users.push({
+      //   id: newUser.name,
+      //   name: newUser.name,
+      //   color: newUser.color,
+      //   weekends: newUser.weekends || []
+      // });
       setUser(newUser);
       // Переходим на календарь
       navigate("/calendar");
@@ -65,14 +73,14 @@ const RegisterPage = () => {
                 <input
                   type="text"
                   placeholder="Введите ваше имя"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={newUser.name}
+                  onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
                   className="w-full p-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   autoFocus
                 />
               </div>
               <div className='flex justify-start w-full'>
-                <ColorPicker value={color} onChange={setColor} />
+                <ColorPicker value={newUser.color} onChange={(color) => setNewUser({ ...newUser, color })} />
               </div>
               <Button
                 type="submit"

@@ -7,7 +7,7 @@ export interface DateOption {
   hasEvent: boolean;
 }
 
-export const getDateOptions = (events: WeekendEvent[], userId?: number): DateOption[] => {
+export const getDateOptions = (events: WeekendEvent[], userId?: string): DateOption[] => {
   const today = new Date();
   const currentMonth = today.getMonth();
   const currentYear = today.getFullYear();
