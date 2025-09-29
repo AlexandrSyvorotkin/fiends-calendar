@@ -7,16 +7,12 @@ import { getDateOptions } from "@/hooks/useDateOptions";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
 const AddWeekendDialog = ({
-    selectedDate,
-    setSelectedDate,
     toggleWeekend,
     events,
     isOpen,
     setIsOpen,
     username,
 }: {
-    selectedDate: string;
-    setSelectedDate: (date: string) => void;
     toggleWeekend: (date: string) => void;
     events: WeekendEvent[];
     isOpen: boolean;
@@ -25,6 +21,7 @@ const AddWeekendDialog = ({
 }) => {
   const dateOptions = getDateOptions(events, username);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string>("Выберите дату");
   return (
     <Dialog 
       open={isOpen} 
