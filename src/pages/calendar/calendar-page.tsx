@@ -11,7 +11,7 @@ import { UserListItem } from "@/components/user-list/user-list-item";
 import { TabsContent, TabsList, TabsTrigger, Tabs } from "@/components/ui/tabs";
 import { Calendar } from "@/components/calendar";
 import { AppHeader } from "@/components/app-header";
-import { CalendarDays, Users, Plus, Settings } from "lucide-react";
+// import { CalendarDays, Users, Plus, Settings } from "lucide-react";
 
 
 const CalendarPage = () => {
