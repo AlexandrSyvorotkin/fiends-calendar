@@ -13,8 +13,7 @@ function ColorPicker({
   onBlur?: () => void
 }) {
   const [open, setOpen] = useState(false)
-  const parsedValue = useMemo(() => value || '#FFFF', [value])
-  
+  const parsedValue = useMemo(() => value || '#FFFFFF', [value])
 
   return (
     <Popover onOpenChange={newOpen => {
