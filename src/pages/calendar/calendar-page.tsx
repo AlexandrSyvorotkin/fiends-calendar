@@ -53,7 +53,7 @@ const CalendarPage = () => {
             </TabsContent>
           </Tabs>
         </div>
-        <div className='md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 py-2 px-4'>
+        {/* <div className='md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 py-2 px-4'>
           <div className='flex justify-around items-center'>
             <button onClick={() => {}} className='flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400'>
               <CalendarDays size={24} />
@@ -72,7 +72,7 @@ const CalendarPage = () => {
               <span className='text-xs'>Настройки</span>
             </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Add Weekend Dialog */}
         <AddWeekendDialog
