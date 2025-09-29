@@ -11,6 +11,7 @@ import { UserListItem } from "@/components/user-list/user-list-item";
 import { TabsContent, TabsList, TabsTrigger, Tabs } from "@/components/ui/tabs";
 import { Calendar } from "@/components/calendar";
 import { AppHeader } from "@/components/app-header";
+import { CalendarDays, Users, Plus, Settings } from "lucide-react";
 
 
 const CalendarPage = () => {
@@ -51,6 +52,26 @@ const CalendarPage = () => {
               <div>Рабочие</div>
             </TabsContent>
           </Tabs>
+        </div>
+        <div className='md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 py-2 px-4'>
+          <div className='flex justify-around items-center'>
+            <button onClick={() => {}} className='flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400'>
+              <CalendarDays size={24} />
+              <span className='text-xs'>Календарь</span>
+            </button>
+            <button onClick={() => {}} className='flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400'>
+              <Users size={24} />
+              <span className='text-xs'>Друзья</span>
+            </button>
+            <button onClick={() => setIsOpen(true)} className='flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400'>
+              <Plus size={24} />
+              <span className='text-xs'>Добавить</span>
+            </button>
+            <button onClick={() => {}} className='flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400'>
+              <Settings size={24} />
+              <span className='text-xs'>Настройки</span>
+            </button>
+          </div>
         </div>
 
         {/* Add Weekend Dialog */}
