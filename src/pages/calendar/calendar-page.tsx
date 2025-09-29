@@ -1,15 +1,9 @@
 import { useUser } from "@/hooks/useUser";
 import { useWeekends } from "@/hooks/useWeekends";
 import { useAllWeekends } from "@/hooks/useAllWeekends";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import FullCalendar from "@fullcalendar/react";
-import listPlugin from "@fullcalendar/list";
-import ruLocale from "@fullcalendar/core/locales/ru";
 import { AddWeekendDialog } from "@/components/add-weekend-dialog";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { UserCard } from "@/components/user-card";
-import useCalendarView from "@/hooks/useCalendarView";
 import { useNavigate } from "react-router";
 import "./calendar.css";
 import { Button } from "@/components/ui/button";
@@ -20,44 +14,25 @@ import { ColorPicker } from "@/components/ui/color-picker";
 import { Switch } from "@/components/ui/switch";
 import { useFirebaseUser } from "@/hooks/useFirebaseUser";
 import { TabsContent, TabsList, TabsTrigger, Tabs } from "@/components/ui/tabs";
+import { Calendar } from "@/components/calendar";
 
 const CalendarPage = () => {
   const { user } = useUser();
   const [selectedDate, setSelectedDate] = useState<string>("Выберите дату");
-
-  const users = useUsers((state) => {
-    // console.log('Current state users:', state.users);
-    return state.users;
-  });
-
-
-  const calendarRef = useRef<FullCalendar | null>(null);
-  const { initialView } = useCalendarView(calendarRef);
-
   const { toggleWeekend } = useWeekends(user.name);
   const { weekendEvents } = useAllWeekends();
-
-
+  const [isOpen, setIsOpen] = useState(false);
+  const { removeUser } = useUser();
+  const { updateUser } = useFirebaseUser();
+  const [color, setColor] = useState(user.color);
+  const users = useUsers((state) => {
+    return state.users;
+  });
   const navigate = useNavigate();
   const userStorage = localStorage.getItem("user");
   if (userStorage === null) {
     navigate("/");
   }
-
-  // Преобразуем все выходные в события для календаря
-  const events = weekendEvents.map((event) => ({
-    title: event.userName,
-    start: event.date,
-    allDay: true,
-    backgroundColor: event.userColor,
-  }));
-
-  const [isOpen, setIsOpen] = useState(false);
-  const { removeUser } = useUser();
-  const { updateUser } = useFirebaseUser();
-
-  const [color, setColor] = useState(user.color);
-
   const onChangeColor = async (newColor: string) => {
     setColor(newColor);
     try {
@@ -69,7 +44,6 @@ const CalendarPage = () => {
       setColor(user.color);
     }
   };
-
 
   return (
     <div className="h-screen flex flex-col bg-blue-500 dark:bg-slate-900">
@@ -94,43 +68,7 @@ const CalendarPage = () => {
               <TabsTrigger value="work">Рабочие</TabsTrigger>
             </TabsList>
             <TabsContent value="weekends">
-              <div
-                className="bg-white rounded-2xl h-full shadow-xl border border-slate-200/50 overflow-hidden fade-in-up flex-1"
-                style={{ animationDelay: "0.2s" }}
-              >
-                <div className="h-full p-2 sm:p-6">
-                  <FullCalendar
-                    ref={calendarRef}
-                    plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
-                    initialView={initialView}
-                    weekends={true}
-                    height="100%"
-                    locale={ruLocale}
-                    firstDay={1}
-                    headerToolbar={{
-                      start: "prev",
-                      center: "title",
-                      end: "next",
-                    }}
-                    buttonText={{
-                      today: "Сегодня",
-                    }}
-                    titleFormat={{ year: "numeric", month: "long" }}
-                    dateClick={async (e) => {
-                      await toggleWeekend(e.dateStr);
-                    }}
-                    eventClick={async (e) => {
-                      await toggleWeekend(e.event.startStr);
-                    }}
-                    eventContent={(arg) => (
-                      <div className="text-xs font-bold text-white px-1 py-0.5 rounded-sm shadow-sm">
-                        {arg.event.title}
-                      </div>
-                    )}
-                    events={events}
-                  />
-                </div>
-              </div>
+              <Calendar />
             </TabsContent>
             <TabsContent value="work">
               <div>Рабочие</div>
