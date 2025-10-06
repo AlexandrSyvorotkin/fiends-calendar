@@ -53,7 +53,7 @@ const Calendar = () => {
             await toggleWeekend(e.event.startStr);
           }}
           eventContent={(arg) => (
-            <div className="text-xs font-bold text-white px-1 py-0.5 rounded-sm shadow-sm">
+            <div className="text-xs font-bold text-black px-1 py-0.5 rounded-sm shadow-sm">
               {arg.event.title}
             </div>
           )}
