@@ -11,7 +11,6 @@ import { UserListItem } from "@/components/user-list/user-list-item";
 import { TabsContent, TabsList, TabsTrigger, Tabs } from "@/components/ui/tabs";
 import { Calendar } from "@/components/calendar";
 import { AppHeader } from "@/components/app-header";
-// import { CalendarDays, Users, Plus, Settings } from "lucide-react";
 
 
 const CalendarPage = () => {
@@ -49,7 +48,6 @@ const CalendarPage = () => {
               <Calendar />
             </TabsContent>
             <TabsContent value="work">
-              <div>Рабочие</div>
             </TabsContent>
           </Tabs>
         </div>
@@ -77,7 +75,7 @@ const CalendarPage = () => {
         {/* Add Weekend Dialog */}
         <AddWeekendDialog
           toggleWeekend={toggleWeekend}
-          events={weekendEvents}
+          events={weekendEvents.filter((event) => event.userName === user.name)}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           username={user.name}

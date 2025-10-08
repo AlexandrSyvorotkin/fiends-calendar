@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { getDateOptions } from "@/hooks/useDateOptions";
 import { type Dispatch, type SetStateAction, useState } from "react";
+import { DatePicker } from "../date-picker";
 
 const AddWeekendDialog = ({
     toggleWeekend,
@@ -21,7 +22,8 @@ const AddWeekendDialog = ({
 }) => {
   const dateOptions = getDateOptions(events, username);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string>("Выберите дату");
+  const [selectedDate, setSelectedDate] = useState<string | undefined>(undefined);
+  // console.log(selectedDate)
   return (
     <Dialog 
       open={isOpen} 
@@ -37,7 +39,19 @@ const AddWeekendDialog = ({
             <Plus size={20} strokeWidth={3} />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-md fade-in-up">
+        <DialogContent 
+          className="sm:max-w-md fade-in-up"
+          onInteractOutside={(e) => {
+            // Предотвращаем закрытие при клике на элементы DatePicker
+            const target = e.target as HTMLElement;
+            // console.log('onInteractOutside', target);
+            e.preventDefault();
+            if (target.closest('[data-radix-popper-content-wrapper]')) {
+              alert('onInteractOutside');
+              e.preventDefault();
+            }
+          }}
+        >
           <DialogHeader className="text-center">
             <DialogTitle>
               <h3 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">Выберите дату</h3>
@@ -46,40 +60,14 @@ const AddWeekendDialog = ({
               Выберите дату для добавления выходного дня
             </DialogDescription>
           </DialogHeader>
-          
           <div className="space-y-6 py-4">
-            <div className="space-y-3">
-              <label className="text-sm font-medium text-slate-700">Дата</label>
-              <Select 
-                open={isSelectOpen}
-                onOpenChange={setIsSelectOpen}
-                value={selectedDate === 'Выберите дату' ? undefined : selectedDate} 
-                onValueChange={setSelectedDate}
-              >
-                <SelectTrigger className="w-full border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                  <SelectValue placeholder="Выберите дату" />
-                </SelectTrigger>
-                <SelectContent>
-                  {dateOptions.map((option) => (
-                    <SelectItem 
-                      key={option.value} 
-                      value={option.value}
-                      disabled={option.hasEvent}
-                    >
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
+            <DatePicker setSelectedDate={setSelectedDate} disabledDates={events.map((event) => new Date(event.date))} />
             <div className="flex gap-3 pt-4">
               <Button 
                 onClick={async () => {
                   if (selectedDate) {
                     await toggleWeekend(selectedDate);
                     setIsOpen(false);
-                    setSelectedDate('Выберите дату');
                   }
                 }}
                 disabled={!selectedDate}
