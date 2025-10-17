@@ -4,12 +4,12 @@ import { useAllWeekends } from "@/hooks/useAllWeekends";
 import { AddWeekendDialog } from "@/features/add-weekend-dialog";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-// import "./calendar.css";
+import "./calendar.css";
 import { useUsers } from "@/hooks/useUsers";
 import { UserList } from "@/features/user-list";
 import { UserListItem } from "@/features/user-list/user-list-item";
 import { TabsContent, TabsList, TabsTrigger, Tabs } from "@/shared/ui/tabs";
-import { Calendar } from "@/shared/ui/calendar";
+import { Calendar } from "@/features/calendar";
 import { AppHeader } from "@/features/app-header";
 
 
