@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
-import { db } from '@/firebase';
+import { db } from '@/app/firebase';
 
 
 export interface WeekendEvent {

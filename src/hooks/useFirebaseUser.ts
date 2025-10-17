@@ -6,7 +6,7 @@ import {
   getDocs,
   collection,
 } from "firebase/firestore";
-import { db } from "@/firebase";
+import { db } from "@/app/firebase";
 
 export interface FirebaseUser {
   id: string;
