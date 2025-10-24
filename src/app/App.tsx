@@ -1,11 +1,13 @@
 import { Outlet } from 'react-router'
-import './App.css'
+import './index.css'
 
 
 function App() {
 
   return (
-    <Outlet/>
+    <div className="min-h-screen">
+      <Outlet/>
+    </div>
   )
 }
 
