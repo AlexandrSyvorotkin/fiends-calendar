@@ -23,9 +23,10 @@ const CalendarPage = () => {
     return state.users;
   });
   const navigate = useNavigate();
-  const userStorage = localStorage.getItem("user");
-  if (userStorage === null) {
-    navigate("/");
+
+  // Проверяем, авторизован ли пользователь
+  if (!user.name) {
+    navigate("/login");
   }
   
 

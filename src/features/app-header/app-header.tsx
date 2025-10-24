@@ -6,12 +6,14 @@ import { UserCard } from "../user-card";
 import { useUser } from "@/hooks/useUser";
 import { useUsers } from "@/hooks/useUsers";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 const AppHeader = () => {
   const { user, removeUser, setColor } = useUser();
   const { updateUser, getAllUsers } = useFirebaseUser();
   const setUsers = useUsers((state) => state.setUsers);
   const [currentColor, setCurrentColor] = useState(user.color);
+  const navigate = useNavigate();
   
   const onChangeColor = async () => {
     console.log('onChangeColor')
@@ -29,13 +31,18 @@ const AppHeader = () => {
       setCurrentColor(previousColor); // Также обновляем локальное состояние
     }
   };
+
+  const handleLogout = () => {
+    removeUser();
+    navigate("/login");
+  };
   return (
     <div className="mb-4 sm:mb-8 text-center fade-in-up flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 p-2 sm:p-4">
       <UserCard />
       <div className="flex items-center gap-4">
         <Switch />
         <ColorPicker value={currentColor} onChange={setCurrentColor} onBlur={onChangeColor} />
-        <Button onClick={() => removeUser()}>Выйти</Button>
+        <Button onClick={handleLogout}>Выйти</Button>
       </div>
     </div>
   );

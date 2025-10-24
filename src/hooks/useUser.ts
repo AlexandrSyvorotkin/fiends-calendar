@@ -40,6 +40,7 @@ export const useUser = create<UserState>((set) => ({
   })),
   removeUser: () => {
     localStorage.removeItem('user')
+    console.log('removeUser')
     set({ user: { name: '', color: '', weekends: [] } })
   },
 }))

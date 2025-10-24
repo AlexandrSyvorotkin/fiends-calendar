@@ -20,6 +20,7 @@ const RegisterForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={() => {}} className="space-y-6 flex flex-col items-center gap-4">
+        <div className="space-y-2 w-full">
         <FormField
           control={form.control}
           name="username"
@@ -32,6 +33,7 @@ const RegisterForm = () => {
             </FormItem>
           )}
         />
+        </div>
       </form>
     </Form>
   );
